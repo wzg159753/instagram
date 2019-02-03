@@ -1,0 +1,11 @@
+{% extends ./base.html %}
+
+{% block title %}Post{% end %}
+
+{% block body %}
+    <span>我是第{{ number }}页</span><br />
+    <img src="{{ static_url('images/{}.jpg'.format(number)) }}" alt="error">
+{#    {% for i in range(1, 4) %}#}
+{#        <img src="{{ static_url('images/{}.jpg'.format(i)) }}" alt="error">#}
+{#    {% end %}#}
+{% end %}
