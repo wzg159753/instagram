@@ -1,0 +1,12 @@
+{% extends ./base.html %}
+
+{% block title %}Upload Page{% end %}
+
+{% block body %}
+<div>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="filename">
+        <input type="submit">
+    </form>
+</div>
+{% end %}

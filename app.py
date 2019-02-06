@@ -13,6 +13,7 @@ class Application(tornado.web.Application):
         handler = [
             (r'/', main.MainHandler),
             (r'/expract', main.expraceHandler),
+            (r'/upload', main.UploadHandler),
             (r'/post/(?P<number>[0-9]+)', main.PostHandler)
         ]
 
