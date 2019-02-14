@@ -2,4 +2,8 @@
 
 {% block title %}Expract{% end %}
 
-{% block body %}我是expract{% end %}
+{% block body %}
+    {% for i in data %}
+        <a href="/post/{{ i.id }}"><img src={{ static_url('{}'.format(i.thumb_url)) }} alt="error"></a>
+    {% end %}
+{% end %}

@@ -1,0 +1,44 @@
+{% extends ./base.html %}
+
+{% block title %}signup page{% end %}
+
+{% block body %}
+
+<div class="row">
+    <form action="/signup" method="post">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">@</span>
+            </div>
+            <input type="text" name="username" class="form-control" placeholder="Username" aria-label="Username"
+                   aria-describedby="basic-addon1">
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">@</span>
+            </div>
+            <input type="text" name="number" class="form-control" placeholder="Phone number" aria-label="Username"
+                   aria-describedby="basic-addon1">
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">@</span>
+            </div>
+            <input type="password" name="password" class="form-control" placeholder="Password" aria-label="Username"
+                   aria-describedby="basic-addon1">
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">@</span>
+            </div>
+            <input type="password" name="password1" class="form-control" placeholder="Password Again" aria-label="Username"
+                   aria-describedby="basic-addon1">
+        </div>
+        <div class="btn-group" role="group" aria-label="Basic example">
+            <button class="btn btn-secondary">注册</button>
+        </div>
+    </form>
+</div>
+
+
+{% end %}

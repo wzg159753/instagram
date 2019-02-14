@@ -3,10 +3,19 @@
 {% block title %}Upload Page{% end %}
 
 {% block body %}
-<div>
+<div class="row">
     <form action="/upload" method="post" enctype="multipart/form-data">
-        <input type="file" name="filename">
-        <input type="submit">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">@</span>
+            </div>
+            <input type="file" name="filename" class="form-control" placeholder="Please up your file"
+                   aria-label="Username"
+                   aria-describedby="basic-addon1">
+        </div>
+        <div class="btn-group" role="group" aria-label="Basic example">
+            <button class="btn btn-secondary">提交</button>
+        </div>
     </form>
 </div>
 {% end %}

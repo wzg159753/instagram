@@ -2,10 +2,27 @@
 
 {% block title %}Index{% end %}
 
-{% block body %}我是index页面<br />
+{% block body %}
+<div class="row">
+    <div class="col col-sm-9">
+        {% if not data %}
+            <p>还没上传过图片，请去<a href="/upload">上传</a></p>
+        {% else %}
+            {% for i in data %}
+                <a href="/post/{{ i.id }}"><img src={{ static_url('{}'.format(i.img_url)) }} alt="error" width="900px"></a>
+            {% end %}
+        {% end %}
+    </div>
+    <div class="col-sm-3 d-none d-sm-block">
 
-    {% for i in range(1,5) %}
-        <img src="{{ static_url('images/{}.jpg'.format(i)) }}" alt="">
-    {% end %}
-
+        <div class="card" style="width: 18rem;">
+          <img class="card-img-top" src="{{ static_url('images/tl.jpg') }}" alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title">{% if username %}{{ username }}{% end %}</h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+          </div>
+        </div>
+    </div>
+</div>
 {% end %}

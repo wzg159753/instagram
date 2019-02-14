@@ -1,0 +1,32 @@
+{% extends ./base.html %}
+
+{% block title %}login{% end %}
+
+{% block body %}
+
+<div class="row">
+    <form action="/login?next={{ next }}" method="post">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">@</span>
+            </div>
+            <input type="text" name="username" class="form-control" placeholder="Username" aria-label="Username"
+                   aria-describedby="basic-addon1">
+        </div>
+
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">@</span>
+            </div>
+            <input type="password" name="pwd" class="form-control" placeholder="Password" aria-label="Username"
+                   aria-describedby="basic-addon1">
+        </div>
+        <div class="btn-group" role="group" aria-label="Basic example">
+            <button class="btn btn-secondary">登录</button>
+        </div>
+        <p>还没账号？<a href="/signup">注册</a>一个</p>
+    </form>
+</div>
+
+
+{% end %}
