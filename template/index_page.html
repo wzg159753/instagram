@@ -6,8 +6,10 @@
 <div class="row">
     <div class="col col-sm-9">
         {% if not data %}
+            {#      如果没上传过图片      #}
             <p>还没上传过图片，请去<a href="/upload">上传</a></p>
         {% else %}
+            {#    如果上传过图片，就展示图片， 并且点击后进入大图    #}
             {% for i in data %}
                 <a href="/post/{{ i.id }}"><img src={{ static_url('{}'.format(i.img_url)) }} alt="error" width="900px"></a>
             {% end %}

@@ -2,7 +2,8 @@ import glob
 import tornado.web
 from pycket.session import SessionMixin
 from utils.photos import UploadImage
-from utils.login_func import add_post_db, search_post_for, search_all_thum, get_post_id
+from sql_dbs.modules import Like
+from utils.login_func import add_post_db, search_post_for, search_all_thum, get_post_id, get_like_post, get_like_count, get_user
 
 
 class BaseHandler(tornado.web.RequestHandler, SessionMixin):
@@ -12,7 +13,6 @@ class BaseHandler(tornado.web.RequestHandler, SessionMixin):
 class MainHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self, *args, **kwargs):
-        # data = glob.glob('static/uploads/*')
         data = search_post_for(self.current_user)
         self.render('index_page.html', data=data, username=self.current_user)
 
@@ -25,11 +25,14 @@ class expraceHandler(BaseHandler):
 
 class PostHandler(BaseHandler):
     def get(self, *args, **kwargs):
-        number = get_post_id(kwargs['number'])
-        self.render('post_page.html',
-                    number=number,
-                    username=self.current_user
-                    )
+        post = get_post_id(kwargs['number'])
+        if post:
+            like_count = get_like_count(post)
+            self.render('post_page.html',
+                        post=post,
+                        username=self.current_user,
+                        like_count = like_count
+                        )
 
 class UploadHandler(BaseHandler):
     @tornado.web.authenticated
@@ -53,5 +56,37 @@ class LogunoutHandler(BaseHandler):
     def get(self, *args, **kwargs):
         self.session.delete('user_id')
         self.redirect('/login')
+
+
+class ProfileHandler(BaseHandler):
+    @tornado.web.authenticated
+    def get(self, *args, **kwargs):
+        # 调用User模板的判断用户存在方法
+        username = self.get_argument('name', '')
+        if not username:
+            username = self.current_user
+        user = get_user(username)
+        # 如果用户存在 就调用查找用户所有上传的方法， 将用户名传入
+        posts = search_post_for(user.username)
+        # 调用查找用户喜欢的图片方法
+        like_post = get_like_post(user)
+        self.render('profile_page.html',
+                    user = user,
+                    username=self.current_user,
+                    posts = posts,
+                    like_post = like_post
+                    )
+
+
+class TestHandler(BaseHandler):
+    def post(self, *args, **kwargs):
+        key = self.get_body_argument('post_id', '')
+        user = get_user(self.current_user)
+        if not Like.is_exits_like(user.id, int(key)):
+            Like.add_like(user.id, int(key))
+        else:
+            Like.del_like(user.id, int(key))
+
+
 
 

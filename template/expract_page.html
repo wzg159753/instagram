@@ -3,7 +3,16 @@
 {% block title %}Expract{% end %}
 
 {% block body %}
+    {#  循环所有上传的图片缩略图路径  #}
     {% for i in data %}
-        <a href="/post/{{ i.id }}"><img src={{ static_url('{}'.format(i.thumb_url)) }} alt="error"></a>
+        <div class="card" style="width: 18rem; display: inline-block">
+            <a href="/post/{{ i.id }}">
+                <img src="{{ static_url('{}'.format(i.thumb_url)) }}" class="card-img-top" alt="..."></a>
+            <div class="card-body">
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
+                    content.</p>
+            </div>
+        </div>
     {% end %}
+
 {% end %}

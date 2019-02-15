@@ -3,6 +3,17 @@
 {% block title %}Post{% end %}
 
 {% block body %}
-    <img src="{{ static_url('{}'.format(number.img_url)) }}" alt="error" width="1000px">
+    {% if like_count %}
+        <span>当前图片有 <i class="fa fa-heart text-danger" id="heart"></i> <span id="pople">{{ like_count }}</span> 人喜欢</span><br>
+    {% else %}
+        <span>当前图片没人喜欢</span><br>
+    {% end %}
+    <img src="{{ static_url('{}'.format(post.img_url)) }}" alt="error" width="1000px"><br>
+    <span id="post_id">{{ post.id }}</span>
+
+{% end %}
+
+{% block script %}
+<script src="{{ static_url('js/heart.js') }}"></script>
 
 {% end %}

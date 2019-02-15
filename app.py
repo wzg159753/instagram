@@ -18,6 +18,8 @@ class Application(tornado.web.Application):
             (r'/login', verify.LoginHandler),
             (r'/signup', verify.SigupHandler),
             (r'/loginout', main.LogunoutHandler),
+            (r'/profile', main.ProfileHandler),
+            (r'/test', main.TestHandler),
             (r'/post/(?P<number>[0-9]+)', main.PostHandler)
         ]
 
@@ -48,4 +50,5 @@ if __name__ == '__main__':
     app = Application()
     tornado.options.parse_command_line()
     app.listen(options.port)
+    print('run server as port {}'.format(options.port))
     tornado.ioloop.IOLoop.current().start()

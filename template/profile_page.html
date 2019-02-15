@@ -1,0 +1,47 @@
+{% extends ./base.html %}
+
+{% block title %}Profile{% end %}
+
+{% block body %}
+<span>当前用户是#{{ user.username }}</span><br>
+{# 用户上传 #}
+<div class="card">
+    <div class="card-header"><h3>用户上传</h3></div>
+    <div class="row">
+        {% for i in posts %}
+            <div class="card col-6 col-sm-3" style="width: 18rem; display: inline-block">
+                <a href="/post/{{ i.id }}">
+                    <img src="{{ static_url('{}'.format(i.thumb_url)) }}" class="card-img-top" alt="..."></a>
+                <div class="card-body">
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                        card's
+                        content.</p>
+                </div>
+            </div>
+        {% end %}
+    </div>
+</div>
+
+
+
+{# 用户喜欢 #}
+<div class="card">
+    <div class="card-header"><h3>用户喜欢</h3></div>
+    <div class="row">
+        {% for i in like_post %}
+            <div class="card col-6 col-sm-3" style="width: 18rem; display: inline-block">
+                <a href="/post/{{ i.id }}">
+                    <img src="{{ static_url('{}'.format(i.thumb_url)) }}" class="card-img-top" alt="..."></a>
+                <div class="card-body">
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                        card's
+                        content.</p>
+                </div>
+            </div>
+        {% end %}
+    </div>
+</div>
+
+
+{##}
+{% end %}

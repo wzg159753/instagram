@@ -61,23 +61,35 @@ class Post(Base):
         )
 
 
-class Deatil(Base):
-    __tablename__ = 'deatil'
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    sex = Column(String(5), default='N')
-    height = Column(String(10))
-    user_id = Column(Integer, ForeignKey('user.id'))
-    user_deatils = relationship('User', backref='deatils', uselist=True, cascade='all')
+class Like(Base):
+    __tablename__ = 'likes'
+    user_id = Column(Integer, ForeignKey('user.id'), primary_key=True)
+    post_id = Column(Integer, ForeignKey('posts.id'), primary_key=True)
 
     def __repr__(self):
         return '''
-            <Deatil>++id={}, sex={}, height={}, user_id={}
+            <Like>++user_id={}, post_id={}
         '''.format(
-            self.id,
-            self.sex,
-            self.height,
-            self.user_id
+            self.user_id,
+            self.post_id
         )
+
+    @classmethod
+    def add_like(cls, user_id, post_id):
+        session.add(Like(user_id=user_id, post_id=post_id))
+        session.commit()
+        return True
+
+    @classmethod
+    def is_exits_like(cls, user_id, post_id):
+        data = session.query(cls).filter(cls.user_id == user_id, cls.post_id == post_id).first()
+        return data
+
+    @classmethod
+    def del_like(cls, user_id, post_id):
+        like = session.query(cls).filter(cls.user_id == user_id, cls.post_id == post_id).first()
+        session.delete(like)
+        session.commit()
 
 class Article(Base):
     __tablename__ = 'article'

@@ -5,6 +5,7 @@
     <title>{% block title %}title{% end %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="{{ static_url('css/bootstrap.css') }}">
+    <link rel="stylesheet" href="{{ static_url('font-awesome-4.7.0/css/font-awesome.css') }}">
     {% block link %}{% end %}
 
 </head>
@@ -13,7 +14,7 @@
     <div class="row">
         <div class="col-sm-10">
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <a class="navbar-brand" href="#">ImgUp</a>
+                <a class="navbar-brand" href="#"><i class="fa fa-camera fa-lg"></i> ImgUp</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse"
                         data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -23,13 +24,25 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item active">
-                            <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+                            <a class="nav-link" href="/"><i class="fa fa-home fa-fw" aria-hidden="true"></i>Home <span class="sr-only">(current)</span></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/expract">Expract</a>
+                            <a class="nav-link" href="/expract"><i class="fa fa-bluetooth" aria-hidden="true"></i>Expract</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/upload">Upload</a>
+                            <a class="nav-link" href="/upload"><i class="fa fa-file" aria-hidden="true"></i>Upload</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-paw" aria-hidden="true"></i>Dropdown
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="#">Like</a>
+                                <a class="dropdown-item" href="/profile">Information</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                            </div>
                         </li>
                     </ul>
                     <form class="form-inline my-2 my-lg-0">
@@ -41,23 +54,19 @@
         </div>
         <div class="col-sm-2" style="max-width: 200px">
             {% if username %}
-                <span>{{ username }}</span>|<a href="/loginout">退出</a>
+            <i class="fa fa-address-card-o fa-lg"></i><span>{{ username }}</span>|<a href="/loginout"><i class="fa fa-reply" aria-hidden="true"></i>退出</a>
             {% else %}
-                <a href="/login">登录</a>|<a href="/signup">注册</a>
+            <a href="/login"><i class="fa fa-share" aria-hidden="true"></i>登录</a>|<a href="/signup"><i class="fa fa-paper-plane" aria-hidden="true"></i>注册</a>
             {% end %}
         </div>
     </div>
 
 
-
-
-
-
-{% block body %}{% end %}
-{% block script %}{% end %}
-<script src="{{ static_url('js/jquery.js') }}"></script>
-<script src="{{ static_url('js/popper.js') }}"></script>
-<script src="{{ static_url('js/bootstrap.js') }}"></script>
+    {% block body %}{% end %}
+    {% block script %}{% end %}
+    <script src="{{ static_url('js/jquery.js') }}"></script>
+    <script src="{{ static_url('js/popper.js') }}"></script>
+    <script src="{{ static_url('js/bootstrap.js') }}"></script>
 </div>
 </body>
 </html>
