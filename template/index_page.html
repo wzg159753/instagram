@@ -11,6 +11,7 @@
         {% else %}
             {#    如果上传过图片，就展示图片， 并且点击后进入大图    #}
             {% for i in data %}
+                {#    data是一个用户的实例，实例点属性拿到所有该用户大图路径    #}
                 <a href="/post/{{ i.id }}"><img src={{ static_url('{}'.format(i.img_url)) }} alt="error" width="900px"></a>
             {% end %}
         {% end %}
@@ -20,7 +21,7 @@
         <div class="card" style="width: 18rem;">
           <img class="card-img-top" src="{{ static_url('images/tl.jpg') }}" alt="Card image cap">
           <div class="card-body">
-            <h5 class="card-title">{% if username %}{{ username }}{% end %}</h5>
+            <h5 class="card-title">{% if current_user %}{{ current_user }}{% end %}</h5>
             <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
             <a href="#" class="btn btn-primary">Go somewhere</a>
           </div>

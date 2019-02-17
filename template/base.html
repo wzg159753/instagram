@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}title{% end %}</title>
+    {#  传入需要继承的bootstrap font-awesome  #}
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="{{ static_url('css/bootstrap.css') }}">
     <link rel="stylesheet" href="{{ static_url('font-awesome-4.7.0/css/font-awesome.css') }}">
+    {#  end  #}
     {% block link %}{% end %}
 
 </head>
@@ -41,7 +43,7 @@
                                 <a class="dropdown-item" href="#">Like</a>
                                 <a class="dropdown-item" href="/profile">Information</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#">Something else here</a>
+                                <a class="dropdown-item" href="/session">talk room</a>
                             </div>
                         </li>
                     </ul>
@@ -53,8 +55,8 @@
             </nav>
         </div>
         <div class="col-sm-2" style="max-width: 200px">
-            {% if username %}
-            <i class="fa fa-address-card-o fa-lg"></i><span>{{ username }}</span>|<a href="/loginout"><i class="fa fa-reply" aria-hidden="true"></i>退出</a>
+            {% if current_user %}
+            <i class="fa fa-address-card-o fa-lg"></i><span>{{ current_user }}</span>|<a href="/loginout"><i class="fa fa-reply" aria-hidden="true"></i>退出</a>
             {% else %}
             <a href="/login"><i class="fa fa-share" aria-hidden="true"></i>登录</a>|<a href="/signup"><i class="fa fa-paper-plane" aria-hidden="true"></i>注册</a>
             {% end %}
@@ -63,10 +65,12 @@
 
 
     {% block body %}{% end %}
-    {% block script %}{% end %}
+
+{#  导入需要的js  #}
     <script src="{{ static_url('js/jquery.js') }}"></script>
     <script src="{{ static_url('js/popper.js') }}"></script>
     <script src="{{ static_url('js/bootstrap.js') }}"></script>
+    {% block script %}{% end %}
 </div>
 </body>
 </html>

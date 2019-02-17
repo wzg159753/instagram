@@ -115,7 +115,7 @@ def get_like_post(user):
     :return:
     """
     if user:
-        # Like表的user_id代表哪一个用户， Like表的post_id代表喜欢哪一张图片， Like表的user_id不等于Post表的user_id 表示自己上传到不能喜欢
+        # Like表的user_id代表哪一个用户， Like表的post_id代表喜欢哪一张图片， Like表的user_id不等于Post表的user_id 表示自己上传的不能喜欢
         # 要查询Post表  因为Post表有图片路径
         post = session.query(Post).filter(Like.user_id == user.id, Like.post_id == Post.id, Like.user_id != Post.user_id).all()
         post.reverse()

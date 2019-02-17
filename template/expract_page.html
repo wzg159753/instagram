@@ -3,10 +3,12 @@
 {% block title %}Expract{% end %}
 
 {% block body %}
-    {#  循环所有上传的图片缩略图路径  #}
+    {#  循环所有上传的图片缩略图的实例  #}
     {% for i in data %}
         <div class="card" style="width: 18rem; display: inline-block">
+            {#      取出每一个对象的id值，Post模板的唯一id      #}
             <a href="/post/{{ i.id }}">
+                {#        将每一个对象的缩略图路径展示到页面        #}
                 <img src="{{ static_url('{}'.format(i.thumb_url)) }}" class="card-img-top" alt="..."></a>
             <div class="card-body">
                 <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's

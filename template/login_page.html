@@ -5,6 +5,7 @@
 {% block body %}
 
 <div class="row">
+    {#  next参数用于跳转到登录之前点击的页面  #}
     <form action="/login?next={{ next }}" method="post">
         <div class="input-group mb-3">
             <div class="input-group-prepend">

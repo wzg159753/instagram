@@ -6,11 +6,9 @@ from sql_dbs.modules import User
 
 class LoginHandler(BaseHandler):
     def get(self, *args, **kwargs):
-        username = self.current_user
         next = self.get_argument('next', '')
         self.render('login_page.html',
-                    next = next,
-                    username = username
+                    next = next
                     )
 
     def post(self, *args, **kwargs):
@@ -33,7 +31,7 @@ class LoginHandler(BaseHandler):
 
 class SigupHandler(BaseHandler):
     def get(self, *args, **kwargs):
-        self.render('signup_page.html', username=self.current_user)
+        self.render('signup_page.html')
 
     def post(self, *args, **kwargs):
         username = self.get_argument('username', '')

@@ -3,14 +3,18 @@
 {% block title %}Profile{% end %}
 
 {% block body %}
+{# 将user对象的username属性拿到并展示 #}
 <span>当前用户是#{{ user.username }}</span><br>
 {# 用户上传 #}
 <div class="card">
     <div class="card-header"><h3>用户上传</h3></div>
     <div class="row">
+        {#    循环posts实例，取每一个对象  这里的posts是该用户上传的所有图片    #}
         {% for i in posts %}
             <div class="card col-6 col-sm-3" style="width: 18rem; display: inline-block">
+                {#        拿到每个对象的id，当点击大图的时候跳转到单个图片页        #}
                 <a href="/post/{{ i.id }}">
+                    {#        拿到每个对象的thumb_url缩略图路径 展示到页面          #}
                     <img src="{{ static_url('{}'.format(i.thumb_url)) }}" class="card-img-top" alt="..."></a>
                 <div class="card-body">
                     <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
@@ -28,6 +32,7 @@
 <div class="card">
     <div class="card-header"><h3>用户喜欢</h3></div>
     <div class="row">
+        {#    拿到用户喜欢的图片实例 循环出每一个对象    #}
         {% for i in like_post %}
             <div class="card col-6 col-sm-3" style="width: 18rem; display: inline-block">
                 <a href="/post/{{ i.id }}">
@@ -42,6 +47,4 @@
     </div>
 </div>
 
-
-{##}
 {% end %}
