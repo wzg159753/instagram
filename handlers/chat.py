@@ -1,8 +1,11 @@
+import re
 import uuid
 from datetime import datetime
 from tornado.websocket import WebSocketHandler
 from tornado.web import RequestHandler
 import tornado.escape
+import tornado.gen
+from tornado.httpclient import AsyncHTTPClient
 from .main import BaseHandler
 
 
@@ -21,13 +24,25 @@ class MessageHandler(WebSocketHandler, BaseHandler):
         print('用户-{}—{}-{}-连接'.format(self.current_user, self.request.remote_ip, datetime.now()))
         MessageHandler.user.add(self)
 
+    @tornado.gen.coroutine
     def on_message(self, message):
         parsed = tornado.escape.json_decode(message)
+        body = parsed['body']
+        url = re.search(r"(\bhttp.*\.jpg$)|(\bhttp.*\.png$)", body)
+        if url:
+            client = AsyncHTTPClient()
+            resp = yield client.fetch('http://192.168.35.128:8080/async?url={}&user={}&from={}'.format(url.group(), self.current_user, 'async'))
+            post_id = resp.body.decode()
+            if post_id != 'Error':
+                body = 'http://192.168.35.128:8080/post/{}'.format(post_id)
+            else:
+                body = parsed['body']
+
         chat = {
             'id': uuid.uuid4().hex,
             'user': self.current_user,
             'time': datetime.now(),
-            'body': parsed['body']
+            'body': body
         }
         msg1 = {
             'html': tornado.escape.to_basestring(

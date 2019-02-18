@@ -3,7 +3,7 @@ import tornado.ioloop
 import tornado.options
 from tornado.options import define, options
 
-from handlers import main, chat
+from handlers import main, chat, service
 from handlers import verify
 
 
@@ -22,7 +22,8 @@ class Application(tornado.web.Application):
             (r'/test', main.TestHandler),
             (r'/session', chat.SessionHandler),
             (r'/ws', chat.MessageHandler),
-            (r'/post/(?P<number>[0-9]+)', main.PostHandler)
+            (r'/post/(?P<number>[0-9]+)', main.PostHandler),
+            (r'/async', service.AsyncHandler)
         ]
 
         settings = dict(
