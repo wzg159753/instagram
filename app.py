@@ -23,7 +23,8 @@ class Application(tornado.web.Application):
             (r'/session', chat.SessionHandler),
             (r'/ws', chat.MessageHandler),
             (r'/post/(?P<number>[0-9]+)', main.PostHandler),
-            (r'/async', service.AsyncHandler)
+            (r'/async', service.AsyncHandler),
+            (r'/del/(?P<pid>)', )
         ]
 
         settings = dict(

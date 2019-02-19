@@ -12,7 +12,8 @@
     {#  拿到传入的post对象的img_url大图路径 展示到页面  #}
     <img src="{{ static_url('{}'.format(post.img_url)) }}" alt="error" width="1000px"><br>
     {#  这个span标签用于ajax实现点击添加喜欢，再次点击取消喜欢  #}
-    <span id="post_id">{{ post.id }}</span>
+    <div style="width: 1000px"><span style="float: right"><a href="/del/{{ post.id }}">删除这张图片</a></span></div>
+    <span id="post_id" style="display: none">{{ post.id }}</span>
 
 {% end %}
 

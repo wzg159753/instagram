@@ -2,7 +2,7 @@ import glob
 import tornado.web
 from pycket.session import SessionMixin
 from utils.photos import UploadImage
-from sql_dbs.modules import Like
+from sql_dbs.modules import Like, Post
 from utils.login_func import add_post_db, search_post_for, search_all_thum, get_post_id, get_like_post, get_like_count, get_user
 
 
@@ -110,6 +110,18 @@ class TestHandler(BaseHandler):
         else:
             # 如果有就删除
             Like.del_like(user.id, int(key))
+
+
+class DelHandler(BaseHandler):
+    @tornado.web.authenticated
+    def get(self, *args, **kwargs):
+        pid = int(kwargs['pid'])
+        user = get_user(self.current_user)
+        if Like.is_exits_like(user.id, pid):
+            Like.del_like(user.id, pid)
+        Post.del_upload_img(pid, user.id)
+        self.write('over')
+
 
 
 

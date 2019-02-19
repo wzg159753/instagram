@@ -7,6 +7,8 @@ import tornado.escape
 import tornado.gen
 from tornado.httpclient import AsyncHTTPClient
 from .main import BaseHandler
+from utils.photos import UploadImage
+from utils.login_func import add_post_db
 
 
 class SessionHandler(BaseHandler):
@@ -30,13 +32,23 @@ class MessageHandler(WebSocketHandler, BaseHandler):
         body = parsed['body']
         url = re.search(r"(\bhttp.*\.jpg$)|(\bhttp.*\.png$)", body)
         if url:
+            # # 方法一
+            # client = AsyncHTTPClient()
+            # resp = yield client.fetch('http://192.168.35.128:8080/async?url={}&user={}&from={}'.format(url.group(), self.current_user, 'async'))
+            # post_id = resp.body.decode()
+            # if post_id != 'Error':
+            #     body = 'http://192.168.35.128:8080/post/{}'.format(post_id)
+            # else:
+            #     body = parsed['body']
+            # 方法二
             client = AsyncHTTPClient()
-            resp = yield client.fetch('http://192.168.35.128:8080/async?url={}&user={}&from={}'.format(url.group(), self.current_user, 'async'))
-            post_id = resp.body.decode()
-            if post_id != 'Error':
-                body = 'http://192.168.35.128:8080/post/{}'.format(post_id)
-            else:
-                body = parsed['body']
+            im = UploadImage('a.jpg', self.settings['static_path'])
+            resp = yield client.fetch(url.group())
+            im.save_upload(resp.body)
+            im.save_thumb()
+            post_id = add_post_db(im.get_upload_path, im.get_thumb_path, self.current_user)
+            body = 'http://192.168.35.128:8080/post/{}'.format(str(post_id))
+
 
         chat = {
             'id': uuid.uuid4().hex,

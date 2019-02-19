@@ -12,6 +12,7 @@ class User(Base):
     password = Column(String(50), nullable=True)
     number = Column(String(11), default='0000')
     create_time = Column(DateTime, default=datetime.now)
+    users = relationship('Post', backref='posts', cascade='all')
 
     def __repr__(self):
         return '''
@@ -26,19 +27,42 @@ class User(Base):
 
     @classmethod
     def add_user(cls, username, password, number):
+        """
+        添加用户
+        :param username:
+        :param password:
+        :param number:
+        :return:
+        """
         session.add(User(username=username, password=password, number=number))
         session.commit()
 
     @classmethod
     def search(cls, username, password):
+        """
+        查找用户  用于登录验证
+        :param username:
+        :param password:
+        :return:
+        """
         return session.query(User).filter(User.username == username, User.password == password).first()
 
     @classmethod
     def is_exists(cls, username):
+        """
+        判断用户存不存在  用于注册
+        :param username:
+        :return:
+        """
         return session.query(User).filter(exists().where(User.username == username)).first()
 
     @classmethod
     def search_posts(cls, username):
+        """
+        查找用户上传的图片 展示在首页
+        :param username:
+        :return:
+        """
         return session.query(User).filter_by(username=username).first()
 
 class Post(Base):
@@ -60,6 +84,16 @@ class Post(Base):
             self.user_id
         )
 
+    @classmethod
+    def del_upload_img(cls, pid, user_id):
+        data = session.query(cls).filter(cls.id == pid, cls.user_id == user_id).first()
+        if data:
+            session.delete(data)
+            session.commit()
+            return True
+        else:
+            return False
+
 
 class Like(Base):
     __tablename__ = 'likes'
@@ -76,43 +110,38 @@ class Like(Base):
 
     @classmethod
     def add_like(cls, user_id, post_id):
+        """
+        添加喜欢
+        :param user_id:
+        :param post_id:
+        :return:
+        """
         session.add(Like(user_id=user_id, post_id=post_id))
         session.commit()
         return True
 
     @classmethod
     def is_exits_like(cls, user_id, post_id):
+        """
+        添加喜欢之前先查找这个喜欢存不存在， 如果存在就删除
+        :param user_id:
+        :param post_id:
+        :return:
+        """
         data = session.query(cls).filter(cls.user_id == user_id, cls.post_id == post_id).first()
         return data
 
     @classmethod
     def del_like(cls, user_id, post_id):
+        """
+        再次点击红心 删除喜欢
+        :param user_id:
+        :param post_id:
+        :return:
+        """
         like = session.query(cls).filter(cls.user_id == user_id, cls.post_id == post_id).first()
         session.delete(like)
         session.commit()
-
-class Article(Base):
-    __tablename__ = 'article'
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    content = Column(String(30), nullable=True)
-    create_time = Column(DateTime, default=datetime.now)
-    article_user = relationship('User', backref='articles', secondary='user_article')
-
-    def __repr__(self):
-        return '''
-            <Article>++id={}, content={}, create_time={}
-        '''.format(
-            self.id,
-            self.content,
-            self.create_time
-        )
-
-
-user_articles = Table('user_article', Base.metadata,
-                      Column('user_id', Integer, ForeignKey('user.id')),
-                      Column('article_id', Integer, ForeignKey('article.id'))
-                      )
-
 
 
 
