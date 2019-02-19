@@ -120,7 +120,7 @@ class DelHandler(BaseHandler):
         if Like.is_exits_like(user.id, pid):
             Like.del_like(user.id, pid)
         Post.del_upload_img(pid, user.id)
-        self.write('over')
+        self.redirect('/')
 
 
 

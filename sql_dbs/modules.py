@@ -1,4 +1,5 @@
 from datetime import datetime
+import os
 from sql_dbs.connect import Base, session
 from sqlalchemy import Column, Integer, String, DateTime, Boolean, Table, exists
 from sqlalchemy.orm import relationship
@@ -85,14 +86,17 @@ class Post(Base):
         )
 
     @classmethod
+    def get_post(cls, post_id):
+        return session.query(cls).filter(cls.id == post_id).first()
+
+    @classmethod
     def del_upload_img(cls, pid, user_id):
-        data = session.query(cls).filter(cls.id == pid, cls.user_id == user_id).first()
-        if data:
-            session.delete(data)
-            session.commit()
-            return True
-        else:
-            return False
+        post = Post.get_post(pid)
+        os.remove('static/{}'.format(post.img_url))
+        os.remove('static/{}'.format(post.thumb_url))
+        session.execute('DELETE FROM posts WHERE id={} AND user_id={}'.format(pid, user_id))
+        session.commit()
+        return True
 
 
 class Like(Base):
