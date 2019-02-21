@@ -23,23 +23,23 @@ class UploadImage(object):
     suo_dir = 'suo'
     size = (300, 300)
 
-    def __init__(self, username, static):
+    def __init__(self, filename, static):
         """
-        初始化传入用户名， 根路径
-        :param username:
+        初始化传入文件名， 根路径
+        :param username:文件名
         :param static:
         """
-        self.name = username
+        self.name = filename
         self.static = static
-        self.newname = self.get_only_name(username)
+        self.newname = self.get_only_name(filename)
 
-    def get_only_name(self, username):
+    def get_only_name(self, filename):
         """
         生成唯一的名字，拼接名字
         :param username:
         :return:
         """
-        name, sem = os.path.splitext(username)
+        name, sem = os.path.splitext(filename)
         new_name = uuid.uuid4().hex
         return new_name + sem
 

@@ -1,7 +1,6 @@
 import tornado.web
 from handlers.main import BaseHandler
 from utils.login_func import verify_login, note_user
-from sql_dbs.modules import User
 
 
 class LoginHandler(BaseHandler):

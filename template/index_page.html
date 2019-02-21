@@ -21,7 +21,13 @@
         <div class="card" style="width: 18rem;">
           <img class="card-img-top" src="{{ static_url('images/tl.jpg') }}" alt="Card image cap">
           <div class="card-body">
-            <h5 class="card-title">{% if current_user %}{{ current_user }}{% end %}</h5>
+            <h5 class="card-title">
+                {% if current_user %}
+                    {{ current_user }}
+                {% else %}
+                    <span>特朗普</span>
+                {% end %}
+            </h5>
             <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
             <a href="#" class="btn btn-primary">Go somewhere</a>
           </div>

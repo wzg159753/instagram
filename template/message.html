@@ -1,1 +1,6 @@
-<div class="message" id="m{{ message["id"] }}">用户-{{ message['user'] }}-{{ message['time'] }}-说：{% module linkify(message["body"]) %}</div>
+<div class="message" id="m{{ message["id"] }}">用户-{{ message['user'] }}-{{ message['time'] }}-说：
+    {% if message['image'] %}
+        <a href="/post/{{ message['post_id'] }}"><img src="{{ static_url('{}'.format(message['image'])) }}" alt=""></a>
+    {% else %}
+        {% module linkify(message["body"]) %}</div>
+    {% end %}

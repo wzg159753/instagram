@@ -69,7 +69,7 @@ def add_post_db(img_url, thumb_url, user_name):
     session.add(post)
     session.commit()
     # 返回post.id为了上传成功后直接跳到大图页
-    return post.id
+    return post
 
 def search_post_for(username):
     """

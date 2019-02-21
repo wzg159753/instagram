@@ -63,8 +63,8 @@ class UploadHandler(BaseHandler):
             ims = UploadImage(name, self.settings['static_path']) # 实例化上传图片类
             ims.save_upload(content) # 保存到上传文件夹
             ims.save_thumb() # 保存缩略图， 用于expract_page页面展示
-            post_id = add_post_db(ims.get_upload_path, ims.get_thumb_path, self.current_user)
-            self.redirect('/post/{}'.format(post_id))
+            post = add_post_db(ims.get_upload_path, ims.get_thumb_path, self.current_user)
+            self.redirect('/post/{}'.format(post.id))
 
 
 class LogunoutHandler(BaseHandler):

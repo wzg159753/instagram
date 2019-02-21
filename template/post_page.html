@@ -3,16 +3,24 @@
 {% block title %}Post{% end %}
 
 {% block body %}
+
     {#  like_count参数 是统计喜欢人数  #}
     {% if like_count %}
         <span>当前图片有 <i class="fa fa-heart text-danger" id="heart"></i> <span id="pople">{{ like_count }}</span> 人喜欢</span><br>
     {% else %}
         <span>当前图片没人喜欢</span><i class="fa fa-heart text-danger" id="heart"></i><br>
     {% end %}
+
+
     {#  拿到传入的post对象的img_url大图路径 展示到页面  #}
     <img src="{{ static_url('{}'.format(post.img_url)) }}" alt="error" width="1000px"><br>
-    {#  这个span标签用于ajax实现点击添加喜欢，再次点击取消喜欢  #}
+
+
+        {#  用于点击删除这张图片  #}
     <div style="width: 1000px"><span style="float: right"><a href="/del/{{ post.id }}">删除这张图片</a></span></div>
+
+
+{#  这个span标签用于ajax实现点击添加喜欢，再次点击取消喜欢  #}
     <span id="post_id" style="display: none">{{ post.id }}</span>
 
 {% end %}
