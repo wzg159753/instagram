@@ -3,8 +3,21 @@
 {% block title %}Profile{% end %}
 
 {% block body %}
-{# 将user对象的username属性拿到并展示 #}
-<span>当前用户是#{{ user.username }}</span><br>
+
+<div class="card">
+  <div class="card-header">
+    当前用户是
+  </div>
+  <div class="card-body">
+      {# 将user对象的username属性拿到并展示 #}
+    <h5 class="card-title">{{ user.username }}</h5>
+    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+{#   /atte?uid={{ user.id }}&from=profile&pwd={{ user.password }}   #}
+{#   关注这个a标签 通过点击这个关注后发起ajax的post请求 向后台发起一个请求 将user.id发送给 tornado后台   #}
+    <a href="#" class="btn btn-primary" id="atte" >关注</a>
+      <span id="uid" class="{{ user.id }}" style="display: none;"></span>
+  </div>
+</div>
 {# 用户上传 #}
 <div class="card">
     <div class="card-header"><h3>用户上传</h3></div>
@@ -47,4 +60,8 @@
     </div>
 </div>
 
+{% end %}
+
+{% block script %}
+    <script src="{{ static_url('js/atte.js') }}"></script>
 {% end %}

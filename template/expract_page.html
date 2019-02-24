@@ -11,8 +11,11 @@
                 {#        将每一个对象的缩略图路径展示到页面        #}
                 <img src="{{ static_url('{}'.format(i.thumb_url)) }}" class="card-img-top" alt="..."></a>
             <div class="card-body">
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-                    content.</p>
+                <p class="card-text">
+                    {#    这里的i.user__post在模型中有relationship      #}
+                    {#    是谁上传的图片，点击后就跳到那个人的profile页    #}
+                    上传用户：<a href="/profile?name={{ i.user_post.username }}">{{ i.user_post.username }}</a>
+                </p>
             </div>
         </div>
     {% end %}

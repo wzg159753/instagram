@@ -2,7 +2,7 @@ import glob
 import tornado.web
 from pycket.session import SessionMixin
 from utils.photos import UploadImage
-from sql_dbs.modules import Like, Post
+from sql_dbs.modules import Like, Post, Atte
 from utils.login_func import add_post_db, search_post_for, search_all_thum, get_post_id, get_like_post, get_like_count, get_user
 
 
@@ -29,7 +29,9 @@ class expraceHandler(BaseHandler):
     def get(self, *args, **kwargs):
         # 一个简单的调用， 按照上传时间展示缩略图
         data = search_all_thum()
-        self.render('expract_page.html', data=data)
+        # 显示是哪个用户上传的
+        user = get_user(self.current_user)
+        self.render('expract_page.html', data=data, user=user)
 
 class PostHandler(BaseHandler):
     """
@@ -113,14 +115,43 @@ class TestHandler(BaseHandler):
 
 
 class DelHandler(BaseHandler):
+    """
+    删除自己上传的图片
+    """
     @tornado.web.authenticated
     def get(self, *args, **kwargs):
+        # 获取图片id 已经放到了单个图片页
         pid = int(kwargs['pid'])
         user = get_user(self.current_user)
+        # 判断图片是否有人喜欢
         if Like.is_exits_like(user.id, pid):
+            # 如果有喜欢 就先把喜欢删除了
             Like.del_like(user.id, pid)
+        # 再删除这张图片
         Post.del_upload_img(pid, user.id)
         self.redirect('/')
+
+
+class AtteHandler(BaseHandler):
+    """
+    用户添加关注
+    """
+    @tornado.web.authenticated
+    def post(self, *args, **kwargs):
+        # 获取ajax传过来的uid  被关注人的id
+        uid = self.get_argument('uid', '')
+        # 获取关注人的id
+        user = get_user(self.current_user)
+        # 判断数据库是否已经关注 如果关注
+        if Atte.atte_is_exits(int(uid), user.id):
+            # 就删除这个关注
+            Atte.delete_atte(int(uid), user.id)
+        else:
+            # 如果没关注  就添加关注
+            Atte.add_atte(int(uid), user.id)
+
+
+
 
 
 

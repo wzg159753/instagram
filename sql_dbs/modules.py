@@ -148,6 +148,61 @@ class Like(Base):
         session.commit()
 
 
+class Atte(Base):
+    """
+    建立用户关注表
+    """
+    __tablename__ = 'attes'
+    # 关注人
+    m_id = Column(Integer, ForeignKey('user.id'), primary_key=True) # 关注用户
+    # 被关注人
+    y_id = Column(Integer, ForeignKey('user.id'), primary_key=True) # 被关注
+
+    def __repr__(self):
+        return '''
+            <Atte>++m_id={}, y_id={}
+        '''.format(
+            self.m_id,
+            self.y_id
+        )
+
+    @classmethod
+    def add_atte(cls, m_id, y_id):
+        """
+        添加关注
+        :param m_id: 关注人
+        :param y_id: 被关注人
+        :return:
+        """
+        data = Atte(m_id=m_id, y_id=y_id)
+        session.add(data)
+        session.commit()
+        return True
+
+    @classmethod
+    def atte_is_exits(cls, m_id, y_id):
+        """
+        判断关注  是否已经关注了 如果关注就返回数据  如果没关注就返回None
+        :param m_id:
+        :param y_id:
+        :return:
+        """
+        return session.query(cls).filter(cls.m_id == m_id, cls.y_id == y_id).first()
+
+    @classmethod
+    def delete_atte(cls, m_id, y_id):
+        """
+        删除关注用户
+        :param m_id:
+        :param y_id:
+        :return:
+        """
+        data = session.query(cls).filter(cls.m_id == m_id, cls.y_id == y_id).first()
+        session.delete(data)
+        session.commit()
+        return True
+
+
 
 if __name__ == '__main__':
     Base.metadata.create_all()
