@@ -157,6 +157,7 @@ class Atte(Base):
     m_id = Column(Integer, ForeignKey('user.id'), primary_key=True) # 关注用户
     # 被关注人
     y_id = Column(Integer, ForeignKey('user.id'), primary_key=True) # 被关注
+    y_name = Column(String(20), nullable=True)
 
     def __repr__(self):
         return '''

@@ -14,7 +14,14 @@
     <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
 {#   /atte?uid={{ user.id }}&from=profile&pwd={{ user.password }}   #}
 {#   关注这个a标签 通过点击这个关注后发起ajax的post请求 向后台发起一个请求 将user.id发送给 tornado后台   #}
-    <a href="#" class="btn btn-primary" id="atte" >关注</a>
+    <a href="" class="btn btn-primary" id="atte" >
+{#    检查当前用户是否关注这个用户 如果存在数据 就展示取消关注 供ajax获取关注状态   #}
+        {% if atte %}
+            取消关注
+        {% else %}
+            关注
+        {% end %}
+    </a>
       <span id="uid" class="{{ user.id }}" style="display: none;"></span>
   </div>
 </div>

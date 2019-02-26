@@ -81,6 +81,7 @@ class LogunoutHandler(BaseHandler):
 class ProfileHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self, *args, **kwargs):
+        m_user = get_user(self.current_user)
         # 判断当前是哪个用户， 可以查看别的用户的上传和喜欢的信息
         username = self.get_argument('name', '')
         if not username:
@@ -88,12 +89,18 @@ class ProfileHandler(BaseHandler):
         user = get_user(username)
         # 如果用户存在 就调用查找用户所有上传的方法， 将用户名传入
         posts = search_post_for(user.username)
+        print(m_user.id)
+        print(user.id)
+        # 判断数据库用户是否关注
+        atte = Atte.atte_is_exits(m_user.id, user.id)
+        print(atte)
         # 调用查找用户喜欢的图片方法
         like_post = get_like_post(user)
         self.render('profile_page.html',
                     user = user,
                     posts = posts,
-                    like_post = like_post
+                    like_post = like_post,
+                    atte = atte
                     )
 
 
@@ -143,12 +150,12 @@ class AtteHandler(BaseHandler):
         # 获取关注人的id
         user = get_user(self.current_user)
         # 判断数据库是否已经关注 如果关注
-        if Atte.atte_is_exits(int(uid), user.id):
+        if Atte.atte_is_exits(user.id, int(uid)):
             # 就删除这个关注
-            Atte.delete_atte(int(uid), user.id)
+            Atte.delete_atte(user.id, int(uid))
         else:
             # 如果没关注  就添加关注
-            Atte.add_atte(int(uid), user.id)
+            Atte.add_atte(user.id, int(uid))
 
 
 
