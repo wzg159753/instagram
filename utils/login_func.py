@@ -1,6 +1,7 @@
 import hashlib
+import os
 from sql_dbs.connect import session
-from sql_dbs.modules import User, Post, Like
+from sql_dbs.modules import User, Post, Like, Atte
 
 '''login session'''
 def hash_data(content):
@@ -132,3 +133,96 @@ def get_like_count(post):
     return session.query(Like).filter(Like.post_id == post.id).count()
 
 
+def get_post(post_id):
+    """
+    获取post的id那条数据  用于删除本地图片
+    :param post_id:
+    :return:
+    """
+    return session.query(Post).filter(Post.id == post_id).first()
+
+def del_upload_img(pid,   user_id):
+    """
+    删除自己上传的图片
+    :param pid:
+    :param user_id:
+    :return:
+    """
+    post = get_post(pid)
+    os.remove('static/{}'.format(post.img_url))
+    os.remove('static/{}'.format(post.thumb_url))
+    session.execute('DELETE FROM posts WHERE id={} AND user_id={}'.format(pid, user_id))
+    session.commit()
+    return True
+
+
+def add_like(user_id, post_id):
+    """
+    添加喜欢
+    :param user_id:
+    :param post_id:
+    :return:
+    """
+    session.add(Like(user_id=user_id, post_id=post_id))
+    session.commit()
+    return True
+
+
+def is_exits_like(user_id, post_id):
+    """
+    添加喜欢之前先查找这个喜欢存不存在， 如果存在就删除
+    :param user_id:
+    :param post_id:
+    :return:
+    """
+    data = session.query(Like).filter(Like.user_id == user_id, Like.post_id == post_id).first()
+    return data
+
+
+def del_like(user_id, post_id):
+    """
+    再次点击红心 删除喜欢
+    :param user_id:
+    :param post_id:
+    :return:
+    """
+    like = session.query(Like).filter(Like.user_id == user_id, Like.post_id == post_id).first()
+    session.delete(like)
+    session.commit()
+
+
+
+def add_atte(m_id, y_id):
+    """
+    添加关注
+    :param m_id: 关注人
+    :param y_id: 被关注人
+    :return:
+    """
+    data = Atte(m_id=m_id, y_id=y_id)
+    session.add(data)
+    session.commit()
+    return True
+
+
+def atte_is_exits(m_id, y_id):
+    """
+    判断关注  是否已经关注了 如果关注就返回数据  如果没关注就返回None
+    :param m_id:
+    :param y_id:
+    :return:
+    """
+    return session.query(Atte).filter(Atte.m_id == m_id, Atte.y_id == y_id).first()
+
+
+def delete_atte(m_id, y_id):
+    """
+    删除关注用户
+    :param m_id:
+    :param y_id:
+    :return:
+    """
+    data = session.query(Atte).filter(Atte.m_id == m_id, Atte.y_id == y_id).first()
+    session.delete(data)
+    session.commit()
+    return True

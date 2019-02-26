@@ -1,9 +1,7 @@
-import glob
 import tornado.web
 from pycket.session import SessionMixin
 from utils.photos import UploadImage
-from sql_dbs.modules import Like, Post, Atte
-from utils.login_func import add_post_db, search_post_for, search_all_thum, get_post_id, get_like_post, get_like_count, get_user
+from utils.login_func import add_post_db, search_post_for, search_all_thum, get_post_id, get_like_post, get_like_count, get_user, del_upload_img, add_like, is_exits_like, del_like, add_atte, atte_is_exits, delete_atte
 
 
 class BaseHandler(tornado.web.RequestHandler, SessionMixin):
@@ -89,11 +87,8 @@ class ProfileHandler(BaseHandler):
         user = get_user(username)
         # 如果用户存在 就调用查找用户所有上传的方法， 将用户名传入
         posts = search_post_for(user.username)
-        print(m_user.id)
-        print(user.id)
         # 判断数据库用户是否关注
-        atte = Atte.atte_is_exits(m_user.id, user.id)
-        print(atte)
+        atte = atte_is_exits(m_user.id, user.id)
         # 调用查找用户喜欢的图片方法
         like_post = get_like_post(user)
         self.render('profile_page.html',
@@ -114,11 +109,14 @@ class TestHandler(BaseHandler):
         # 调用get_user获取当前用户的user_id
         user = get_user(self.current_user)
         # 要先判断数据库中有没有这个喜欢， 没有就添加
-        if not Like.is_exits_like(user.id, int(key)):
-            Like.add_like(user.id, int(key))
+        if not is_exits_like(user.id, int(key)):
+            add_like(user.id, int(key))
+            self.redirect('/post/{}'.format(key))
+            self.flush()
         else:
             # 如果有就删除
-            Like.del_like(user.id, int(key))
+            del_like(user.id, int(key))
+
 
 
 class DelHandler(BaseHandler):
@@ -131,11 +129,11 @@ class DelHandler(BaseHandler):
         pid = int(kwargs['pid'])
         user = get_user(self.current_user)
         # 判断图片是否有人喜欢
-        if Like.is_exits_like(user.id, pid):
+        if is_exits_like(user.id, pid):
             # 如果有喜欢 就先把喜欢删除了
-            Like.del_like(user.id, pid)
+            del_like(user.id, pid)
         # 再删除这张图片
-        Post.del_upload_img(pid, user.id)
+        del_upload_img(pid, user.id)
         self.redirect('/')
 
 
@@ -150,12 +148,12 @@ class AtteHandler(BaseHandler):
         # 获取关注人的id
         user = get_user(self.current_user)
         # 判断数据库是否已经关注 如果关注
-        if Atte.atte_is_exits(user.id, int(uid)):
+        if atte_is_exits(user.id, int(uid)):
             # 就删除这个关注
-            Atte.delete_atte(user.id, int(uid))
+            delete_atte(user.id, int(uid))
         else:
             # 如果没关注  就添加关注
-            Atte.add_atte(user.id, int(uid))
+            add_atte(user.id, int(uid))
 
 
 

@@ -6,9 +6,9 @@
 
     {#  like_count参数 是统计喜欢人数  #}
     {% if like_count %}
-        <span>当前图片有 <i class="fa fa-heart text-danger" id="heart"></i> <span id="pople">{{ like_count }}</span> 人喜欢</span><br>
+        <span>当前图片有 <a href=""><i class="fa fa-heart text-danger" id="heart"></i></a> <span id="pople">{{ like_count }}</span> 人喜欢</span><br>
     {% else %}
-        <span>当前图片没人喜欢</span><i class="fa fa-heart text-danger" id="heart"></i><br>
+        <span>当前图片没人喜欢</span><a href=""><i class="fa fa-heart text-danger" id="heart"></i></a><br>
     {% end %}
 
 
